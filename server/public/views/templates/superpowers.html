@@ -1,0 +1,18 @@
+<h2>List/Remove Hero</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Persona</th>
+      <th>Alias</th>
+      <th>Power</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="hero in heroes.heroes">
+      <td>{{hero.persona}}</td>
+      <td>{{hero.alias}}</td>
+      <td>{{hero.power_id}}</td>
+      <td><button class="btn btn-default" ng-click="heroes.deleteHero(hero)">Delete Hero</button></td>
+    </tr>
+  </tbody>
+</table>

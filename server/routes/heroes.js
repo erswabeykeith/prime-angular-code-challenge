@@ -1,30 +1,44 @@
 var express = require('express');
 var router = express.Router();
-var config = require('../config/config.js');
+// var config = require('../config/config.js');
 var pg = require('pg');
 var bodyParser = require('body-parser');
+var connectionString = 'postgres://localhost:5432/super_heroes';
 
-var pool = new pg.Pool({
-  database: config.database
-});
 
-router.use(bodyParser.json());
+// router.use(bodyParser.json());
 
 // return all heroes
 router.get('/', function (req, res) {
-  pool.connect()
-    .then(function (client) {
-      client.query('SELECT heroes.*, super_powers.name, super_powers.description FROM heroes JOIN super_powers ON heroes.power_id = super_powers.id')
-        .then(function (result) {
-          client.release();
-          res.send(result.rows);
-        })
-        .catch(function (err) {
-          console.log('error on SELECT', err);
-          res.sendStatus(500);
-        });
+  pg.connect(connectionString, function(err, client, done) {
+    if(err) {
+      console.log('connection error: ', err);
+      res.sendStatus(500);
+    }
+//Send this info from DB
+      client.query('SELECT heroes.*, super_powers.name, super_powers.description FROM heroes JOIN super_powers ON heroes.power_id = super_powers.id;', function(err, result) {
+      done(); // close the connection.
+      console.log(result);
+
+      if(err) {
+              console.log('select query error: ', err);
+              res.sendStatus(500);
+            }
+//Send the rows of the result
+      res.send(result.rows);
     });
+  });
 });
+//         .then(function (result) {
+//           client.release();
+//           res.send(result.rows);
+//         })
+//         .catch(function (err) {
+//           console.log('error on SELECT', err);
+//           res.sendStatus(500);
+//         });
+//     });
+// });
 
 router.post('/', function (req, res) {
   var newHero = req.body;
@@ -43,7 +57,7 @@ router.post('/', function (req, res) {
         });
     });
 });
-
+//Request to delete Hero from DB
 router.delete('/:id', function(req, res) {
   var heroId = req.params.id;
   console.log('Deleting hero ID:, ', heroId);

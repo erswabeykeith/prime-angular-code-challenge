@@ -1,11 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var config = require('../config/config.js');
 var pg = require('pg');
-
-var pool = new pg.Pool({
-  database: config.database
-});
+var connectionString = 'postgres://localhost:5432/super_heroes';
 
 // return all super power names
 router.get('/', function (req, res) {
@@ -21,7 +17,7 @@ router.get('/', function (req, res) {
           console.log('error on SELECT', err);
           res.sendStatus(500);
         });
-    });    
+    });
 });
 
 

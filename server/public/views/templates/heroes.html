@@ -1,0 +1,39 @@
+<h2>Enter Hero</h2>
+<div>
+  <form id="hero-form">
+    <div class="form-group">
+      <label for="persona">Persona:</label>
+      <input type="text" ng-model="heroes.newHero.persona" name="persona" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="alias">Alias:</label>
+      <input type="text" ng-model="heroes.newHero.alias" name="alias" class="form-control" />
+    </div>
+
+    <div class="form-group">
+      <label for="power_id">Power:</label>
+      <input type="text" ng-model="heroes.newHero.power_id" name="power_id"  class="form-control"/>
+    </div>
+
+
+    <button class="btn btn-default" ng-click="heroes.getHeroes()">Submit Hero</button>
+
+  </form>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Persona</th>
+        <th>Alias</th>
+        <th>Power</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="hero in heroes.heroes">
+        <td>{{hero.persona}}</td>
+        <td>{{hero.alias}}</td>
+        <td>{{hero.power_id}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
